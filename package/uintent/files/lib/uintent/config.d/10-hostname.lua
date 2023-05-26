@@ -5,5 +5,11 @@ local util = require("uintent.util")
 
 local profile = util.get_profile()
 
-uci:set("system", uci:get_first("system", "system"), "hostname", profile["hostname"])
+hostname = string.gsub(
+  profile["hostname"],
+  "{mac}",
+  string.gsub(util.get_primary_mac(), ":", "")
+)
+
+uci:set("system", uci:get_first("system", "system"), "hostname", hostname)
 uci:commit("system")
